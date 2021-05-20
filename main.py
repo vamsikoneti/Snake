@@ -8,6 +8,7 @@ class Snake:
         self.block = pygame.image.load("resources/block.jpg").convert()
         self.x = 100
         self.y = 100
+        self.direction = 'down'
 
     def draw(self):
         self.parentScreen.fill((230, 115, 80))
@@ -18,20 +19,29 @@ class Snake:
         pygame.display.flip()
 
     def moveLeft(self):
-        self.x -= 10
-        self.draw()
+        self.direction = 'left'
     
     def moveRight(self):
-        self.x += 10
-        self.draw()
+        self.direction = 'right'
     
     def moveUp(self):
-        self.y -=10
-        self.draw()
+        self.direction = 'up'
 
     def moveDown(self):
-        self.y +=10
+        self.direction = 'down'
+
+    def walk(self):
+        if self.direction == 'up':
+            self.y -= 10
+        if self.direction == 'down':
+            self.y +=10
+
+        if self.direction == 'left':
+            self.x -=10
+        if self.direction == 'right':
+            self.x +=10
         self.draw()
+
 
 
 class Game:
@@ -73,6 +83,11 @@ class Game:
                     
                 elif (ev.type == QUIT) :
                     run = False
+
+            self.snake.walk()
+            #timer to move snake automatically
+            time.sleep(0.2)
+
 
 
 
