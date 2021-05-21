@@ -35,7 +35,7 @@ class Snake:
         self.direction = 'down'
 
     def draw(self):
-        self.parentScreen.fill(BACKGROUND)
+        
 
         for i in range (self.length):
             self.parentScreen.blit(self.block, (self.x[i] , self.y[i]))
@@ -104,8 +104,13 @@ class Game:
                 return True
         return False
 
+    def background(self):
+        bg = pygame.image.load("resources/background.jpg")
+        self.surface.blit(bg, (0,0))
+
 
     def play(self):
+        self.background()
         self.snake.walk()
         self.grape.draw()
         self.displayScore()
@@ -127,6 +132,7 @@ class Game:
         self.surface.blit(score, (600,10))
     
     def gameOver(self):
+        self.background()
         font = pygame.font.SysFont('arial', 30)
         self.surface.fill(BACKGROUND)
         line1 = font.render(f"Game Over! Your score is: {self.snake.length}", True, (255,255,255))
@@ -178,7 +184,7 @@ class Game:
                 pause = True
                 self.reset()
             #timer to move snake automatically
-            time.sleep(0.2)
+            time.sleep(0.1)
 
 
 
