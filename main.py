@@ -1,6 +1,7 @@
 import pygame
 import time
 from pygame.locals import *
+import random
 
 #grape has dimensions 5x5
 
@@ -16,7 +17,9 @@ class Grape:
 
         pygame.display.flip()
 
-
+    def move(self):
+        self.x = random.randint(1,30)*SIZE
+        self.y = random.randint(1,30)*SIZE
 
 SIZE = 35
 class Snake:
@@ -85,10 +88,20 @@ class Game:
         self.grape = Grape(self.surface)
         self.grape.draw()
 
+    def collision(self, x1, y1, x2, y2):
+        if (x1 >= x2 and x1 <= x2 + SIZE):
+            if (y1 >= y2 and y1 <= y2 + SIZE):
+                return True
+        return False
+
+
     def play(self):
         self.snake.walk()
         self.grape.draw()
 
+        if self.collision(self.snake.x[0], self.snake.y[0], self.grape.x, self.grape.y):
+            self.snake.length +=1
+            self.grape.move()
 
     def run(self):
         #event loop
