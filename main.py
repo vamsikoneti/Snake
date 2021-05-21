@@ -18,8 +18,8 @@ class Grape:
         pygame.display.flip()
 
     def move(self):
-        self.x = random.randint(1,30)*SIZE
-        self.y = random.randint(1,30)*SIZE
+        self.x = random.randint(1,20)*SIZE
+        self.y = random.randint(1,20)*SIZE
 
 SIZE = 35
 class Snake:
@@ -38,6 +38,13 @@ class Snake:
             self.parentScreen.blit(self.block, (self.x[i] , self.y[i]))
 
         pygame.display.flip()
+
+
+    def increaseLength(self):
+        self.length +=1
+        self.x.append(-1)
+        self.y.append(-1)
+
 
     def moveLeft(self):
         self.direction = 'left'
@@ -74,7 +81,7 @@ class Snake:
 class Game:
     def __init__(self):
         pygame.init()
-        length = 7
+        length = 1
 
         #initialize pygame window
         self.surface = pygame.display.set_mode((750,750))
@@ -89,8 +96,8 @@ class Game:
         self.grape.draw()
 
     def collision(self, x1, y1, x2, y2):
-        if (x1 >= x2 and x1 <= x2 + SIZE):
-            if (y1 >= y2 and y1 <= y2 + SIZE):
+        if (x1 >= x2 and x1 < x2 + SIZE):
+            if (y1 >= y2 and y1 < y2 + SIZE):
                 return True
         return False
 
@@ -98,10 +105,17 @@ class Game:
     def play(self):
         self.snake.walk()
         self.grape.draw()
+        self.displayScore()
+        pygame.display.flip()
 
         if self.collision(self.snake.x[0], self.snake.y[0], self.grape.x, self.grape.y):
-            self.snake.length +=1
+            self.snake.increaseLength()
             self.grape.move()
+
+    def displayScore(self):
+        font = pygame.font.SysFont('arial', 30)
+        score = font.render(f"Score:  {self.snake.length}", True, (0,0,0))
+        self.surface.blit(score, (800,10))
 
     def run(self):
         #event loop
